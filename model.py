@@ -39,4 +39,12 @@ def load_data(args):
     return X_train, X_test, y_train, y_test
 
 def build_model(args):
-    
+
+    return -1
+
+def main():
+    """
+    Load and train model
+    """
+    parser = argparse.ArgumentParser(description='Behavioral Cloning Training Program')
+    parser.add_argument('-d', help='data directory', dest='data_dir', type=str, default='data')
