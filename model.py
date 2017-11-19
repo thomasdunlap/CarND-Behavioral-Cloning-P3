@@ -39,8 +39,8 @@ def load_data(args):
     return X_train, X_test, y_train, y_test
 
 def build_model(args):
+    pass
 
-    return -1
 
 def main():
     """
