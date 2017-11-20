@@ -15,7 +15,7 @@ from keras.layers.convolutional import Convolution2D
 import argparse # Reading command line arguments
 import os # Reading files
 
-path = './data/IMG/'
+path = '/Users/tomdunlap/projects/udacity/sd_car/CarND-Behavioral-Cloning-P3/data/'
 angle_adjustment = 0.1
 
 '''
@@ -39,53 +39,94 @@ def load_data(args):
     return X_train, X_test, y_train, y_test
 '''
 
-def img_process(X, y, line, cam_view_index):
+def img_process(X, y, line):
     """
     Args: X (list of list of images), y (list of steering angles), line (list/csv line), cam_view_index (int).
     Returns: images and angles with original and flipped images, converted to RGB.
     """
-    image = cv2.imread('./data/IMG' + line[cam_view_index].split('/')[-1])
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    images.append(image_rgb)
-    angles.append(float(line[3]))
-    #flipped
-    images.append(cv2.flip(image_rgb, 1))
-    angles.append(-float(line[3]))
+    for i in range(3):
+        source_path = line[i]
+        filename = source_path.split('/')[-1]
+        current_path = './data/IMG/' + filename
+
+        image = cv2.imread(current_path)
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        X.append(image_rgb)
+        y.append(float(line[3]))
+
+        # Flips image
+        X.append(cv2.flip(image_rgb, 1))
+        # Flips angle relative to flipped image
+        y.append(-float(line[3]))
+
     return X, y
 
+'''
+for line in reader:
+    for i in range(3):
+        images, angles = img_process(images, angles, line, i)
+'''
 
+lines = []
 images = []
 angles = []
 with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
-        center_image = cv2.imread(path + line[0].split('/')[-1])
+        lines.append(line)
+print(lines[1])
+
+for line in lines[1:]:
+    images, angles = img_process(images, angles, line)
+
+
+
+
+
+'''
+    source_path = line[0]
+    filename = source_path.split('/')[-1]
+    current_path = './data/IMG/' + filename
+    image = cv2.imread(current_path)
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    images.append(image)
+    angle = float(line[3])
+    angles.append(angle)
+'''
+'''
+        print
+        center_image = cv2.imread(path + 'IMG/' + line[0].split('/')[-1])
         center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+
         images.append(center_image_rgb)
         angles.append(float(line[3]))
         #flipped
         images.append(cv2.flip(center_image_rgb, 1))
         angles.append(-float(line[3]))
 
-        left_image = cv2.imread(image_path + line[1].split('/')[-1])
-        left_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+        left_image = cv2.imread(path  + 'IMG/' + line[1].split('/')[-1])
+        left_image_rgb = cv2.cvtColor(left_image, cv2.COLOR_BGR2RGB)
+
         images.append(left_image_rgb)
         angles.append(float(line[3])+angle_adjustment)
         #flipped
         images.append(cv2.flip(left_image_rgb, 1))
         angles.append(-(float(line[3])+angle_adjustment))
 
-        right_image = cv2.imread(image_path + line[2].split('/')[-1])
-        right_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+        right_image = cv2.imread(path  + 'IMG/' + line[2].split('/')[-1])
+        right_image_rgb = cv2.cvtColor(right_image, cv2.COLOR_BGR2RGB)
+
         images.append(right_image_rgb)
         angles.append(float(line[3])-angle_adjustment)
         #flipped
         images.append(cv2.flip(right_image_rgb, 1))
         angles.append(-(float(line[3])-angle_adjustment))
-
+'''
+# Split data to training/test : 80%/20%
 X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.2)
 
-
+# Convert to numpy for Keras
 X_train = np.array(X_train)
 y_train = np.array(y_train)
 X_test = np.array(X_test)
@@ -111,4 +152,4 @@ model.summary()
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 model.fit(X_train, y_train, validation_data=(X_test, y_text), nb_epoch=7, shuffle=True)
 
-model.save('model.h5')
+model.save('model_mine.h5')
