@@ -55,7 +55,10 @@ model.add(Dense(1))
 
 model.summary()
 
+model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+model.fit(X_train, y_train, validation_data=(X_val, y_val), nb_epoch=7, shuffle=True)
 
+model.save('model.h5')
 
 
 def build_model(args):
