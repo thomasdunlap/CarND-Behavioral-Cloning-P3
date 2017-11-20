@@ -15,7 +15,7 @@ from keras.layers.convolutional import Convolution2D
 import argparse # Reading command line arguments
 import os # Reading files
 
-path = './IMG/'
+path = './data/IMG/'
 angle_adjustment = 0.1
 
 '''
@@ -39,23 +39,27 @@ def load_data(args):
     return X_train, X_test, y_train, y_test
 '''
 
-def img_process(images, angles, line, cam_view_index):
-    image = cv2.imread('./IMG' + line[cam_view_index].split('/')[-1])
+def img_process(X, y, line, cam_view_index):
+    """
+    Args: X (list of list of images), y (list of steering angles), line (list/csv line), cam_view_index (int).
+    Returns: images and angles with original and flipped images, converted to RGB.
+    """
+    image = cv2.imread('./data/IMG' + line[cam_view_index].split('/')[-1])
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     images.append(image_rgb)
     angles.append(float(line[3]))
     #flipped
     images.append(cv2.flip(image_rgb, 1))
     angles.append(-float(line[3]))
-    return images, angles
+    return X, y
 
 
 images = []
 angles = []
-with open('./driving_log.csv') as csvfile:
+with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
-        center_image = cv2.imread(image_path + line[0].split('/')[-1])
+        center_image = cv2.imread(path + line[0].split('/')[-1])
         center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
         images.append(center_image_rgb)
         angles.append(float(line[3]))
@@ -79,7 +83,7 @@ with open('./driving_log.csv') as csvfile:
         images.append(cv2.flip(right_image_rgb, 1))
         angles.append(-(float(line[3])-angle_adjustment))
 
-X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.1)
+X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.2)
 
 
 X_train = np.array(X_train)
