@@ -75,7 +75,6 @@ with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
-print(lines[1])
 
 for line in lines[1:]:
     images, angles = img_process(images, angles, line)
@@ -150,6 +149,6 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, validation_data=(X_test, y_text), nb_epoch=7, shuffle=True)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=7, shuffle=True)
 
 model.save('model_mine.h5')
