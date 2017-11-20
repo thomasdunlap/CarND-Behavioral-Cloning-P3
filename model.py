@@ -39,6 +39,17 @@ def load_data(args):
     return X_train, X_test, y_train, y_test
 '''
 
+def img_process(images, angles, line, cam_view_index):
+    image = cv2.imread('./IMG' + line[cam_view_index].split('/')[-1])
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    images.append(image_rgb)
+    angles.append(float(line[3]))
+    #flipped
+    images.append(cv2.flip(image_rgb, 1))
+    angles.append(-float(line[3]))
+    return images, angles
+
+
 images = []
 angles = []
 with open('./driving_log.csv') as csvfile:
