@@ -15,6 +15,10 @@ from keras.layers.convolutional import Convolution2D
 import argparse # Reading command line arguments
 import os # Reading files
 
+path = './IMG/'
+angle_adjustment = 0.1
+
+'''
 #for debugging, allows for reproducible/deterministic results
 np.random.seed(0)
 
@@ -22,17 +26,55 @@ def load_data(args):
     """
     Load training data and split into training and testing sets
     """
-    #reads CSV file into a single dataframe
+    # Reads CSV file into a single dataframe
     data_df = pd.read_csv(os.path.join(args.data_dir, 'driving_log.csv'))
-    #images are inputs
+    # Images are inputs
     X = data_df[['center', 'left', 'right']].values
-    # steering angle is output data
+    # Steering angle is output data
     y = data_df['steering'].values
 
     # 80/20 split train/test
     X_train, X_test, y_train, y_test = train_test_split(X, y test_size=args.test_size, random_state=0)
 
     return X_train, X_test, y_train, y_test
+'''
+
+images = []
+angles = []
+with open('./driving_log.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    for line in reader:
+        center_image = cv2.imread(image_path + line[0].split('/')[-1])
+        center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+        images.append(center_image_rgb)
+        angles.append(float(line[3]))
+        #flipped
+        images.append(cv2.flip(center_image_rgb, 1))
+        angles.append(-float(line[3]))
+
+        left_image = cv2.imread(image_path + line[1].split('/')[-1])
+        left_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+        images.append(left_image_rgb)
+        angles.append(float(line[3])+angle_adjustment)
+        #flipped
+        images.append(cv2.flip(left_image_rgb, 1))
+        angles.append(-(float(line[3])+angle_adjustment))
+
+        right_image = cv2.imread(image_path + line[2].split('/')[-1])
+        right_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+        images.append(right_image_rgb)
+        angles.append(float(line[3])-angle_adjustment)
+        #flipped
+        images.append(cv2.flip(right_image_rgb, 1))
+        angles.append(-(float(line[3])-angle_adjustment))
+
+X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.1)
+
+
+X_train = np.array(X_train)
+y_train = np.array(y_train)
+X_test = np.array(X_test)
+y_test = np.array(y_test)
 
 
 model = Sequential()
@@ -52,18 +94,6 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, validation_data=(X_val, y_val), nb_epoch=7, shuffle=True)
+model.fit(X_train, y_train, validation_data=(X_test, y_text), nb_epoch=7, shuffle=True)
 
 model.save('model.h5')
-
-
-def build_model(args):
-    pass
-
-
-def main():
-    """
-    Load and train model
-    """
-    parser = argparse.ArgumentParser(description='Behavioral Cloning Training Program')
-    parser.add_argument('-d', help='data directory', dest='data_dir', type=str, default='data')
