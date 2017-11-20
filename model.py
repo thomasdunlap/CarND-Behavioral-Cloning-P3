@@ -1,23 +1,19 @@
-import numpy as np # read and update dataframes
-import pandas as pd # math
-# splits data into training and test sets
+import numpy as np # Math
+import pandas as pd # Read and update data
+import csv # Read csv files
+import cv2 # OpenCV2 for image processing
+# Splits data into training and test sets
 from sklearn.model_selection import train_test_split
-# keras is a high-level wrapper (library) around TensorFlow
+# Shuffle order of training set each epoch
+from sklearn.utils import shuffle
+# Keras is a high-level wrapper (library) around TensorFlow
 # Sequential is linear stack of layers
 from keras.models import Sequential
-# optimizer using gradient descent
-from keras.optimizers import Adam
-# save model checkpoints to load later
-from keras.callbacks import ModelCheckpoint
-# model layers
-from keras.layers import Lambda, Conv2D, MaxPooling2D, Dropout, Dense, Flatten
-# helper class to define input shape and generate training images given
-# image paths and steering angles
-from utils import INPUT_SHAPE, batch_generator
-# for command line arguments
-import argparse
-# for reading files
-import os
+# Model layers
+from keras.layers import Cropping2D, Dense, Flatten, Lambda
+from keras.layers.convolutional import Convolution2D
+import argparse # Reading command line arguments
+import os # Reading files
 
 #for debugging, allows for reproducible/deterministic results
 np.random.seed(0)
