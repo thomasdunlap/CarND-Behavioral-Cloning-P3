@@ -86,7 +86,7 @@ with open('./data/driving_log.csv') as csvfile:
         #flipped
         images.append(cv2.flip(center_image_rgb, 1))
         angles.append(-float(line[3]))
-
+'''
         left_image = cv2.imread('./data/IMG/' + line[1].split('/')[-1])
         left_image_rgb = cv2.cvtColor(left_image, cv2.COLOR_BGR2RGB)
 
@@ -104,7 +104,7 @@ with open('./data/driving_log.csv') as csvfile:
         #flipped
         images.append(cv2.flip(right_image_rgb, 1))
         angles.append(-(float(line[3])-angle_adjustment))
-
+'''
 
 
 '''
