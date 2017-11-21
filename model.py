@@ -153,15 +153,19 @@ for line in lines[1:]:
         print
 
 '''
+images = np.array(images)
+angles = np.array(angles)
+
 # Split data to training/test : 80%/20%
 X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.2)
 
+'''
 # Convert to numpy for Keras
 X_train = np.array(X_train)
 y_train = np.array(y_train)
 X_test = np.array(X_test)
 y_test = np.array(y_test)
-
+'''
 
 model = Sequential()
 model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160, 320, 3)))
