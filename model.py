@@ -76,11 +76,67 @@ with open('./data/driving_log.csv') as csvfile:
     for line in reader:
         lines.append(line)
 
+    for line in lines[1:]:
+        #print(line)
+        center_image = cv2.imread('./data/IMG/' + line[0].split('/')[-1])
+        center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
+
+        images.append(center_image_rgb)
+        angles.append(float(line[3]))
+        #flipped
+        images.append(cv2.flip(center_image_rgb, 1))
+        angles.append(-float(line[3]))
+
+        left_image = cv2.imread('./data/IMG/' + line[1].split('/')[-1])
+        left_image_rgb = cv2.cvtColor(left_image, cv2.COLOR_BGR2RGB)
+
+        images.append(left_image_rgb)
+        angles.append(float(line[3])+angle_adjustment)
+        #flipped
+        images.append(cv2.flip(left_image_rgb, 1))
+        angles.append(-(float(line[3])+angle_adjustment))
+
+        right_image = cv2.imread('./data/IMG/' + line[2].split('/')[-1])
+        right_image_rgb = cv2.cvtColor(right_image, cv2.COLOR_BGR2RGB)
+
+        images.append(right_image_rgb)
+        angles.append(float(line[3])-angle_adjustment)
+        #flipped
+        images.append(cv2.flip(right_image_rgb, 1))
+        angles.append(-(float(line[3])-angle_adjustment))
+
+
+
+'''
+
+
+
+
+
+
+
+
+
+print(lines[2])
 for line in lines[1:]:
-    images, angles = img_process(images, angles, line)
+    for i in range(3):
+        source_path = line[i]
+        filename = source_path.split('/')[-1]
+        current_path = './data/IMG/' + filename
+
+        image = cv2.imread(current_path)
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        images.append(image_rgb)
+        angles.append(float(line[3]))
+
+        # Flips image
+        images.append(cv2.flip(image_rgb, 1))
+        # Flips angle relative to flipped image
+        angles.append(-float(line[3]))
 
 
-
+'''
 
 
 '''
@@ -95,32 +151,7 @@ for line in lines[1:]:
 '''
 '''
         print
-        center_image = cv2.imread(path + 'IMG/' + line[0].split('/')[-1])
-        center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
 
-        images.append(center_image_rgb)
-        angles.append(float(line[3]))
-        #flipped
-        images.append(cv2.flip(center_image_rgb, 1))
-        angles.append(-float(line[3]))
-
-        left_image = cv2.imread(path  + 'IMG/' + line[1].split('/')[-1])
-        left_image_rgb = cv2.cvtColor(left_image, cv2.COLOR_BGR2RGB)
-
-        images.append(left_image_rgb)
-        angles.append(float(line[3])+angle_adjustment)
-        #flipped
-        images.append(cv2.flip(left_image_rgb, 1))
-        angles.append(-(float(line[3])+angle_adjustment))
-
-        right_image = cv2.imread(path  + 'IMG/' + line[2].split('/')[-1])
-        right_image_rgb = cv2.cvtColor(right_image, cv2.COLOR_BGR2RGB)
-
-        images.append(right_image_rgb)
-        angles.append(float(line[3])-angle_adjustment)
-        #flipped
-        images.append(cv2.flip(right_image_rgb, 1))
-        angles.append(-(float(line[3])-angle_adjustment))
 '''
 # Split data to training/test : 80%/20%
 X_train, X_test, y_train, y_test = train_test_split(images, angles, test_size=0.2)
@@ -149,6 +180,6 @@ model.add(Dense(1))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=7, shuffle=True)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=3, shuffle=True)
 
 model.save('model_mine.h5')
