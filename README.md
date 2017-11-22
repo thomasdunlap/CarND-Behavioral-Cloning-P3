@@ -15,9 +15,9 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [Nvidia_model]: ./examples/Nvidia_model.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
+[curve_1]: ./examples/stupid_curve1.jpg "Difficult Curve 1"
+[curve_2]: ./examples/stupid_curve2.jpg "Difficult Curve 2"
+[curve_3]: ./examples/stupid_curve3.jpg "Difficult Curve 3"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
@@ -89,6 +89,8 @@ In order to gauge how well the model was working, I split my image and steering 
 I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
 
 To combat the overfitting, I modified the model so that ...
+
+![][curve_1] ![][curve_2] ![][curve_3]
 
 Then I ...
 
