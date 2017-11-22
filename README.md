@@ -102,6 +102,21 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
+| Layer (type)         | Output Shape        | Param #  | Kernal Size       |
+| ---------------------|:-------------------:| --------:| ----------------: |
+| Lambda         | (None, 160, 320, 3) | 0        |   |
+| Cropping2D     | (None, 65, 320, 3)  | 0        |       |
+| Convolution2D  | (None, 31, 158, 24) | 1824     |  5x5   |
+| Convolution2D  | (None, 14, 77, 36)  | 21636    | 5x5 |
+| Convolution2D  | (None, 5, 37, 48)   | 43248    | 5x5 |
+| Convolution2D  | (None, 3, 35, 64)   | 27712    | 3x3 |
+| Convolution2D  | (None, 1, 33, 64)   | 36928    | 3x3 |
+| Flatten        | (None, 2112)        | 0        |  |
+| Dense          | (None, 100)         | 211300   |        |
+| Dense          | (None, 50)          | 5050     |          |
+| Dense          | (None, 10)          | 510      |          |
+| Dense          | (None, 1)           | 11       |  None                   |
+
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 ![Nvidia model][Nvidia_model]
