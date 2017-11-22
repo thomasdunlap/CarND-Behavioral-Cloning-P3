@@ -37,7 +37,7 @@ My project includes the following files:
 * writeup_report.md or writeup_report.pdf summarizing the results
 
 #### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
+Using the Udacity provided simulator and my [drive.py](https://github.com/thomasdunlap/CarND-Behavioral-Cloning-P3/blob/master/drive.py) file, the car can be driven autonomously around the track by executing
 
 ```sh
 python drive.py model.h5
@@ -45,7 +45,7 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The [model.py](https://github.com/thomasdunlap/CarND-Behavioral-Cloning-P3/blob/master/model.py) file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ### Model Architecture and Training Strategy
 
@@ -53,6 +53,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 My model is based on the suggested Nvidia architecture.
 
+![Nvidia model][Nvidia_model]
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24)
 
@@ -90,7 +91,7 @@ I found that my first model had a low mean squared error on the training set but
 
 To combat the overfitting, I modified the model so that ...
 
-![][curve_1] ![][curve_2] ![][curve_3]
+![Curve my model couldn't handle part 1][curve_1] ![Curve my model couldn't handle part 2][curve_2] ![Curve my model couldn't handle part 3][curve_3]
 
 Then I ...
 
@@ -116,10 +117,6 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Dense          | (None, 50)          | 5050     |          |
 | Dense          | (None, 10)          | 510      |          |
 | Dense          | (None, 1)           | 11       |  None                   |
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![Nvidia model][Nvidia_model]
 
 #### 3. Creation of the Training Set & Training Process
 
