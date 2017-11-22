@@ -19,8 +19,8 @@ The goals / steps of this project are the following:
 [curve_2]: ./examples/stupid_curve2.jpg "Difficult Curve 2"
 [curve_3]: ./examples/stupid_curve3.jpg "Difficult Curve 3"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[normal]: ./examples/normal.png "Normal Image"
+[flipped]: ./examples/flipped.png "Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -129,8 +129,8 @@ To capture good driving behavior, I first recorded three laps on track one using
 
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
 
-![alt text][image6]
-![alt text][image7]
+![alt text][normal]
+![alt text][flipped]
 
 Etc ....
 
