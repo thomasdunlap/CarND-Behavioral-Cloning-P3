@@ -83,17 +83,14 @@ The overall strategy for deriving a model architecture was to follow the steps g
 
 I had to adjust the speed in the drive.py file (line 47), but other than that I mostly just followed directions.
 
-My first step was to use a convolution neural network model similar to the Nvidia model presented in the online lectures. I thought this model might be appropriate because it had already been used on in the real world, and that should hopefully translate to more simplified, simulated conditions.
+My first step was to use a convolutional neural network model similar to the Nvidia model presented in the online lectures. I thought this model might be appropriate because it had already been used on in the real world, and that should hopefully translate to more simplified, simulated conditions.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. At first the model was taking a LONG time to run.  This was because I was not using the generator function, which loosely churns out a specified portion of the data instead of constructing and iterating through the entire data set first. I was also initially using the left and right camera images, as well as flipping them, which I will eventually put back into an improved model, but I have to minimum-viable-product things for now, with the term closing soon.  
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation sets. At first the model was taking a LONG time to run.  This was because I was not using the generator function, which yields (returns) an array in batches (smaller groups) instead of constructing and iterating through the entire data set. I was also initially using the left and right camera images, as well as flipping them, which I will eventually put back into an improved model, but I have to minimum-viable-product things for now, with Term 1 closing soon.  
 
 I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
 
-To combat the overfitting, I modified the model so that ...
 
 ![Curve my model couldn't handle part 1][curve_1] ![Curve my model couldn't handle part 2][curve_2] ![Curve my model couldn't handle part 3][curve_3]
-
-Then I ...
 
 The final step was to run the simulator to see how well the car was driving around track one. The model worked the first time I tried it at a constant speed of 9 mph, which is nuts.  I then cranked it to a whopping 30 mph, which caused the car to "oversteer" and eventually crash into a stony ravine.  I then adjusted it to 18 mph, and it worked.  There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
 
@@ -105,18 +102,18 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 
 | Layer (type)         | Output Shape        | Param #  | Kernal Size       |
 | ---------------------|:-------------------:| --------:| ----------------: |
-| Lambda         | (None, 160, 320, 3) | 0        |   |
-| Cropping2D     | (None, 65, 320, 3)  | 0        |       |
-| Convolution2D  | (None, 31, 158, 24) | 1824     |  5x5   |
+| Lambda         | (None, 160, 320, 3) | 0        |     |
+| Cropping2D     | (None, 65, 320, 3)  | 0        |     |
+| Convolution2D  | (None, 31, 158, 24) | 1824     | 5x5 |
 | Convolution2D  | (None, 14, 77, 36)  | 21636    | 5x5 |
 | Convolution2D  | (None, 5, 37, 48)   | 43248    | 5x5 |
 | Convolution2D  | (None, 3, 35, 64)   | 27712    | 3x3 |
 | Convolution2D  | (None, 1, 33, 64)   | 36928    | 3x3 |
-| Flatten        | (None, 2112)        | 0        |  |
-| Dense          | (None, 100)         | 211300   |        |
-| Dense          | (None, 50)          | 5050     |          |
-| Dense          | (None, 10)          | 510      |          |
-| Dense          | (None, 1)           | 11       |  None                   |
+| Flatten        | (None, 2112)        | 0        |     |
+| Dense          | (None, 100)         | 211300   |     |
+| Dense          | (None, 50)          | 5050     |     |
+| Dense          | (None, 10)          | 510      |     |
+| Dense          | (None, 1)           | 11       | None |
 
 #### 3. Creation of the Training Set & Training Process
 
