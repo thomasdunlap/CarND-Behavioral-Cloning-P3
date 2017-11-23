@@ -87,12 +87,11 @@ My first step was to use a convolutional neural network model similar to the Nvi
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation sets. At first the model was taking a LONG time to run.  This was because I was not using the generator function, which yields (returns) an array in batches (smaller groups) instead of constructing and iterating through the entire data set. I was also initially using the left and right camera images, as well as flipping them, which I will eventually put back into an improved model, but I have to minimum-viable-product things for now, with Term 1 closing soon.  
 
-I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
+My model has a low mean squared error on both the training and validation sets, implying it was doing a good job predicting the angles. Again, I was surprised by this, because the Nvidia model is strong enough to work without drop out layers, or the left and right camera angles as long as you augment the center images with their flipped counter-parts.
 
+The final step was to run the simulator to see how well the car was driving around track one. The model worked the first time I tried it at a constant speed of 9 mph.  I then really hit the simulated nitro at by setting my drive.py speed to 30 mph (line 47), which caused the car to veer wildly into a stony ravine.  I then adjusted it to 18 mph, and it almost worked, eventually settling at 15 mph.  Here's the only curve the vehicle had trouble with at 18 mph:
 
 ![Curve my model couldn't handle part 1][curve_1] ![Curve my model couldn't handle part 2][curve_2] ![Curve my model couldn't handle part 3][curve_3]
-
-The final step was to run the simulator to see how well the car was driving around track one. The model worked the first time I tried it at a constant speed of 9 mph, which is nuts.  I then cranked it to a whopping 30 mph, which caused the car to "oversteer" and eventually crash into a stony ravine.  I then adjusted it to 18 mph, and it worked.  There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
@@ -100,7 +99,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
 
-| Layer (type)         | Output Shape        | Param #  | Kernal Size       |
+| Layer (type)         | Output Shape        | Parameters  | Patch Size      |
 | ---------------------|:-------------------:| --------:| ----------------: |
 | Lambda         | (None, 160, 320, 3) | 0        |     |
 | Cropping2D     | (None, 65, 320, 3)  | 0        |     |
@@ -128,9 +127,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 After the collection process, I had X number of data points. I then preprocessed this data by ...
 
-I also converted the BGR to RGB for Keras, and used a Lambda layer to normalize the data around a cental average value
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set.
+I also converted the BGR to RGB for Keras, and used a Lambda layer to normalize the data around an average value of zero.  I finally randomly shuffled the data set and put Y% of the data into a validation set.
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
