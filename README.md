@@ -63,17 +63,15 @@ The images are cropped, with 70 pixels removed from the top, and 25 from the bot
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21).
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 117). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an Adam optimizer, so the learning rate was not tuned manually (model.py line 115).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ...
+Training data was chosen to keep the vehicle driving on the road. I used exclusively images based on trying to stay in the center of the lane, although I was imperfect at staying in the center, which I kept in to help the model learn to correct itself.
 
 For details about how I created the training data, see the next section.
 
@@ -81,9 +79,9 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to follow the steps given in the Udacity lessons.  I mostly just put together what they suggested, and it worked without even adding the left or right images, or adding correction data.
+The overall strategy for deriving a model architecture was to follow the steps given in the Udacity lessons.  I put together what they suggested, and it worked without even including the left or right images, or actively adding correction data.
 
-I had to adjust the speed in the drive.py file (line NUMBER), but other than that I mostly just followed directions.
+I had to adjust the speed in the drive.py file (line 47), but other than that I mostly just followed directions.
 
 My first step was to use a convolution neural network model similar to the Nvidia model presented in the online lectures. I thought this model might be appropriate because it had already been used on in the real world, and that should hopefully translate to more simplified, simulated conditions.
 
