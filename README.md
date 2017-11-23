@@ -55,9 +55,11 @@ My model is based on the suggested Nvidia architecture.
 
 ![Nvidia model][Nvidia_model]
 
-My model consists convolutional neural network with 5x5 and 3x3 filter sizes, and depths between 24 and 64 (model.py lines 18-24)
+My model consists convolutional neural network with 5x5 and 3x3 filter sizes, and depths between 24 and 64 (model.py lines 86-117)
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18).
+The model includes RELU activations to introduce nonlinearity in each of its convolutions (lines 92-100), and the data is normalized in the model using a Keras Lambda layer (code line 86).
+
+The images are cropped, with 70 pixels removed from the top, and 25 from the bottom, with a Keras Cropping2D layer (line 90).
 
 #### 2. Attempts to reduce overfitting in the model
 
