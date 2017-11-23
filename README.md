@@ -98,7 +98,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
 
 | Layer (type)         | Output Shape        | Param #  | Kernal Size       |
 | ---------------------|:-------------------:| --------:| ----------------: |
@@ -119,17 +119,16 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 
 To capture good driving behavior, I first recorded three laps on track one using center lane driving. Here is an example image of center lane driving:
 
-![alt text][image2]
+![Center lane image][normal]
 
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
 
-![alt text][normal]
-![alt text][flipped]
-
-Etc ....
+![Center lane image][normal]
+![Flipped image][flipped]
 
 After the collection process, I had X number of data points. I then preprocessed this data by ...
 
+I also converted the BGR to RGB for Keras, and used a Lambda layer to normalize the data around a cental average value
 
 I finally randomly shuffled the data set and put Y% of the data into a validation set.
 
