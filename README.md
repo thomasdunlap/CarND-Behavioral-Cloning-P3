@@ -137,3 +137,7 @@ After the collection process, I had X number of data points. I then preprocessed
 I finally randomly shuffled the data set and put Y% of the data into a validation set.
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+There are many ways I hope to improve this model in the future.  I'd like to incorporate the left and right images, and data from the second, more difficult track.  It would also be helpful to give the drive.py file a range of speeds to drive at, as opposed to a constant speed.
+
+Also, sometimes the road has shadows that the car seems to avoid slightly, so shadows could be included in some of the augmented images.
