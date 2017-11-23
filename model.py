@@ -83,28 +83,42 @@ validation_generator = generator(validation_samples, batch_size=32)
 
 ch, row, col = 160, 320, 3  # Trimmed image format
 
-model = Sequential()
+model = Sequential() # Linear stack of layers
 # Preprocess incoming data, centered around zero with small standard deviation
 model.add(Lambda(lambda x: x / 127.5 - 1.,input_shape=(ch, row, col),output_shape=(ch, row, col)))
+# Crops image ((top_crop, bottom_crop), (left_crop, right_crop))
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
+# 5x5 convolution with 24 filters, 2x2 stride (subsample), relu activation
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
+# 5x5 convolution with 36 filters, 2x2 stride (subsample), relu activation
 model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
+# 5x5 convolution with 48 filters, 2x2 stride (subsample), relu activation
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
+# 3x3 convolution with 64 filters, relu activation
 model.add(Convolution2D(64, 3, 3, activation='relu'))
+# 3x3 convolution with 64 filters, relu activation
 model.add(Convolution2D(64, 3, 3, activation='relu'))
+# Compress tensor to single vector
 model.add(Flatten())
+# Fully connected layer with output of 100
 model.add(Dense(100))
+# Fully connected, output 50
 model.add(Dense(50))
+# Fully connected, output 10
 model.add(Dense(10))
+# Fully connected, output 1
 model.add(Dense(1))
 
+# Print summary of layers
 model.summary()
-
+# Use mean squared error and Adam optimizer
 model.compile(loss='mse', optimizer='adam')
-model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3)
+# Fit model using generator for training and validation, 10 epochs
+model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=10)
 
 # Save model to local folder
 model.save('model.h5')
+
 '''
 
 angle_adjustment = 0.1
@@ -127,8 +141,11 @@ def img_process(X, y, line):
 
         # Flips image
         X.append(cv2.flip(image_rgb, 1))
+        angle_adjustment = 0
+        if i > 0:
+            angle_adjustment = (-1) ** (i - 1)
         # Flips angle relative to flipped image
-        y.append(-float(line[3]))
+        y.append(-float(line[3]) + angle_adjustment)
 
     return X, y
 
@@ -169,21 +186,4 @@ with open('./data/driving_log.csv') as csvfile:
         images.append(cv2.flip(right_image_rgb, 1))
         angles.append(-(float(line[3])-angle_adjustment))
 
-print(lines[2])
-for line in lines[1:]:
-    for i in range(3):
-        source_path = line[i]
-        filename = source_path.split('/')[-1]
-        current_path = './data/IMG/' + filename
-
-        image = cv2.imread(current_path)
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-        images.append(image_rgb)
-        angles.append(float(line[3]))
-
-        # Flips image
-        images.append(cv2.flip(image_rgb, 1))
-        # Flips angle relative to flipped image
-        angles.append(-float(line[3]))
 '''
