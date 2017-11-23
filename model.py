@@ -16,41 +16,68 @@ from keras.layers.convolutional import Convolution2D
 import argparse # Reading command line arguments
 import os # Reading files
 
-
+# Create list of lists of data and corresponding images
 samples = []
 with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
 
+# Split to training/validation sets 80%/20%; Leave out samples[0], which are column labels.
 train_samples, validation_samples = train_test_split(samples[1:], test_size=0.2)
 
+
 def generator(samples, batch_size=32):
+    """
+    Generator allows for large amounts of data to be created and iterated over
+    in small batches, as opposed for waiting for it to go through all data at once.
+    Args:
+        samples: data to process (list)
+        batch_size: samples processed per generation
+    Yields (returns):
+        X_train: shuffled numpy array of training images with added flipped images
+        y_train: shuffled numpy array of steering angles with added flipped steering anglesß
+    """
     num_samples = len(samples)
     while 1: # Loop forever so the generator never terminates
         shuffle(samples)
+        # Iterate through range counting by batch_size
         for offset in range(0, num_samples, batch_size):
+            # Equals batch_size-length array of samples
             batch_samples = samples[offset:offset+batch_size]
 
             images = []
             angles = []
             for batch_sample in batch_samples:
-                name = './data/IMG/'+batch_sample[0].split('/')[-1]
+
+                # Takes center image label substring we initially took from csv
+                # Attach path to name to call corresponding image file
+                name = './data/IMG/' + batch_sample[0].split('/')[-1]
+
+                # Create OpenCV image file from full path in name
                 center_image = cv2.imread(name)
+
+                # Convert BGR to RGB color for Keras processing
                 center_image_rgb = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
-                center_angle = float(batch_sample[3])
+
+                # Corresponding steering angle at index 3
+                center_angle = float(batch_sample[3]) # Convert to float
+
+                # Add image and angle to same index in seperate arrays
                 images.append(center_image_rgb)
                 angles.append(center_angle)
-                # Flipped images
+
+                # Add flipped version of image and angle to augment data set
+                # Evens left and right turns, reducing overfitting
                 images.append(cv2.flip(center_image_rgb, 1))
                 angles.append(-float(line[3]))
 
-            # trim image to only see section with road
+            # Convert images and angles to numpy arrays for Keras
             X_train = np.array(images)
             y_train = np.array(angles)
-            yield sklearn.utils.shuffle(X_train, y_train)
+            yield sklearn.utils.shuffle(X_train, y_train) # Yield/return shuffled batch
 
-# compile and train the model using the generator function
+# ompile and train the model using the generator function
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 
@@ -76,7 +103,8 @@ model.summary()
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3)
 
-model.save('model_mine.h5')
+# Save model to local folder
+model.save('model.h5')
 '''
 path = '/Users/tomdunlap/projects/udacity/sd_car/CarND-Behavioral-Cloning-P3/data/'
 angle_adjustment = 0.1
