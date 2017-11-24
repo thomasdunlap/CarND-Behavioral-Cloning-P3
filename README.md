@@ -139,24 +139,35 @@ There are many ways I hope to improve this model in the future.  I'd like to inc
 
 Also, sometimes the road has shadows that the car seems to avoid slightly, so shadows could be included in some of the augmented images.
 
-6400/6428 [============================>.] - ETA: 0s - loss: 0.0076/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py:1569: UserWarning: Epoch comprised more than `samples_per_epoch` samples, which might affect learning results. Set `samples_per_epoch` correctly to avoid this warning.
-  warnings.warn('Epoch comprised more than '
+Epoch 1/10
+
+6400/6428 [============================>.] - ETA: 0s - loss: 0.0076/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py:1569: UserWarning: Epoch comprised more than `samples_per_epoch` samples, which might affect learning results. Set `samples_per_epoch` correctly to avoid this warning.warnings.warn('Epoch comprised more than '
+
 6464/6428 [==============================] - 54s - loss: 0.0076 - val_loss: 0.0060
+
 Epoch 2/10
 6456/6428 [==============================] - 13s - loss: 0.0067 - val_loss: 0.0067
+
 Epoch 3/10
 6464/6428 [==============================] - 12s - loss: 0.0054 - val_loss: 0.0060
+
 Epoch 4/10
 6456/6428 [==============================] - 12s - loss: 0.0060 - val_loss: 0.0067
+
 Epoch 5/10
 6464/6428 [==============================] - 12s - loss: 0.0049 - val_loss: 0.0065
+
 Epoch 6/10
 6456/6428 [==============================] - 12s - loss: 0.0055 - val_loss: 0.0055
+
 Epoch 7/10
 6464/6428 [==============================] - 12s - loss: 0.0046 - val_loss: 0.0056
+
 Epoch 8/10
 6456/6428 [==============================] - 12s - loss: 0.0052 - val_loss: 0.0047
+
 Epoch 9/10
 6464/6428 [==============================] - 12s - loss: 0.0044 - val_loss: 0.0048
+
 Epoch 10/10
 6456/6428 [==============================] - 12s - loss: 0.0051 - val_loss: 0.0058
