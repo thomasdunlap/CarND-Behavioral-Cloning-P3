@@ -97,9 +97,9 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
+The final model architecture (model.py lines 86-117) consisted of a convolution neural network with the following layers and layer sizes:
 
-| Layer (type)         | Output Shape        | Parameters  | 
+| Layer (type)         | Output Shape        | Parameters  |
 | ---------------------|:-------------------:| --------:|
 | Lambda         | (None, 160, 320, 3) | 0        |  
 | Cropping2D     | (None, 65, 320, 3)  | 0        |  
@@ -115,7 +115,9 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Dense          | (None, 1)           | 11       |
 
 Total params: 348,219
+
 Trainable params: 348,219
+
 Non-trainable params: 0
 
 #### 3. Creation of the Training Set & Training Process
@@ -124,24 +126,16 @@ To capture good driving behavior, I first recorded three laps on track one using
 
 ![Center lane image][normal]
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+After the collection process, I had 3214 CSV rows of data, with 9642 corresponding images. Using just the 3214 center images, I preprocessed this data by converting the color layer order form BGR to RGB. I used a Lambda layer to normalize the data around an average value of zero.  I finally randomly shuffled the data set and put 20% of the data into a validation set.
+
+To augment the data sat, I also flipped images and angles to avoid overfitting for left turns. Because the track is essentially a circle, the car is getting mostly left turn data.  Therefore I mirrored every image and angle (multiplied angle by -1) to make sure there was an equal distribution of turns to both the right and left. For example, here is an image that has then been flipped:
 
 ![Center lane image][normal]
 ![Flipped image][flipped]
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-I also converted the BGR to RGB for Keras, and used a Lambda layer to normalize the data around an average value of zero.  I finally randomly shuffled the data set and put Y% of the data into a validation set.
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
-
-There are many ways I hope to improve this model in the future.  I'd like to incorporate the left and right images, and data from the second, more difficult track.  It would also be helpful to give the drive.py file a range of speeds to drive at, as opposed to a constant speed.
-
-Also, sometimes the road has shadows that the car seems to avoid slightly, so shadows could be included in some of the augmented images.
-
+I used this combination of preprocessed and augmented data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs appears to be 9, as evidenced by the increased loss in both the training and validation sets.  
+```shell
 Epoch 1/10
-
-6400/6428 [============================>.] - ETA: 0s - loss: 0.0076/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py:1569: UserWarning: Epoch comprised more than `samples_per_epoch` samples, which might affect learning results. Set `samples_per_epoch` correctly to avoid this warning.warnings.warn('Epoch comprised more than '
 
 6464/6428 [==============================] - 54s - loss: 0.0076 - val_loss: 0.0060
 
@@ -180,3 +174,7 @@ Epoch 9/10
 Epoch 10/10
 
 6456/6428 [==============================] - 12s - loss: 0.0051 - val_loss: 0.0058
+```
+Although it is possible that the Adam optimizer may have found a lower rate, given it was trending towards a better fit despite not having consistently lower loss for each new epoch. I used an Adam optimizer so that manually training the learning rate wasn't necessary.
+
+There are many ways I hope to improve this model in the future.  I'd like to incorporate the left and right images, and data from the second, more difficult track.  It would also be helpful to give the drive.py file a range of speeds to drive at, as opposed to a constant speed.  Also, sometimes the road has shadows that the car seems to avoid slightly, so shadows could be included in some of the augmented images. Overall, this is an incredibly fun and exciting project, and I look forward to diving deeper into it in the near future.
