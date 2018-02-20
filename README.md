@@ -11,7 +11,6 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
-
 [//]: # (Image References)
 
 [Nvidia_model]: ./examples/Nvidia_model.png "Model Visualization"
@@ -114,11 +113,11 @@ The final model architecture (model.py lines 86-117) consisted of a convolution 
 | Dense          | (None, 10)          | 510      |  
 | Dense          | (None, 1)           | 11       |
 
-Total params: 348,219
+Total parameters: 348,219
 
-Trainable params: 348,219
+Trainable parameters: 348,219
 
-Non-trainable params: 0
+Non-trainable parameters: 0
 
 #### 3. Creation of the Training Set & Training Process
 
@@ -134,6 +133,7 @@ To augment the data sat, I also flipped images and angles to avoid overfitting f
 ![Flipped image][flipped]
 
 I used this combination of preprocessed and augmented data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs appears to be 9, as evidenced by the increased loss in both the training and validation sets.  
+
 ```shell
 Epoch 1/10
 
